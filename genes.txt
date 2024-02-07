@@ -1,0 +1,11 @@
+
+Basic Genes: 
+
+  & Vision Gene - improve the amount of sqaures that the individual can see
+    - this helps with finding food ans spotting predators since there is diferent states of movement. 
+  
+  & Speed Gene - improve the movement speed overall 
+
+  & Memory Gene - creates basic neural network for remembering traveled squares 
+    - this kinda helps to not go to recent squares where there was no food 
+    

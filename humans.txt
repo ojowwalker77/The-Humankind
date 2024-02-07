@@ -1,0 +1,10 @@
+
+Basic Humans definitions:
+
+  Vision
+  Damage 
+  Speed 
+  Genes 
+  HP
+
+  etc...
