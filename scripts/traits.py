@@ -1,10 +1,9 @@
-#traits.py
 from base_individuo import BaseIndividuo
 
 class VisionIndividuo:
     @staticmethod
     def upgrade(ind):
-        ind.visao += 3  # Slight nerf: Enhance vision by an additional 2 squares instead of 3.
+        ind.visao += 3 
         if not hasattr(ind, 'has_vision_gene'):
             ind.has_vision_gene = True
             BaseIndividuo.total_vision_individuals += 1
@@ -13,21 +12,21 @@ class VisionIndividuo:
 class SpeedIndividuo:
     @staticmethod
     def upgrade(ind):
-        ind.velocidade += 3  # Enhanced speed: Increase from 3 to 4 for a slight buff.
+        ind.velocidade += 3
         if not hasattr(ind, 'has_speed_gene'):
             ind.has_speed_gene = True
             BaseIndividuo.total_speed_individuals += 1 
         return ind
 
 class MemoryIndividuo:
-    total_memory_individuals = 0  # Initialize class variable to track memory trait individuals
+    total_memory_individuals = 0
 
     @staticmethod
     def upgrade(ind):
         if not hasattr(ind, 'memory_gene'):
             ind.memory_gene = True
-            ind.remembered_empty_squares = set()  # Initialize memory storage
-            MemoryIndividuo.total_memory_individuals += 1  # Increment total individuals with memory trait
+            ind.remembered_empty_squares = set()
+            MemoryIndividuo.total_memory_individuals += 1
         return ind
 
     def update_after_move(self, current_square, food_locations):
