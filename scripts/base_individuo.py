@@ -3,7 +3,6 @@ import random
 from utils import current_time_millis
 
 class BaseIndividuo:
-    # Class-level statistics
     total_duelos = 0
     total_lifetime = 0
     total_individuals = 0
@@ -15,23 +14,17 @@ class BaseIndividuo:
     deaths_by_predator = 0
     deaths_by_duel = 0
 
-    
-    BMR = 1.0  # Basic Metabolic Rate, calories burned at rest
-    ACTIVITY_COSTS = {
-            'moving': 0.2,  # Calorie cost per distance unit when moving
-            'running': 0.5,  # Calorie cost per distance unit when running from predators
-            'dueling': 2,  # Fixed calorie cost for engaging in a duel
-            }
-    
+    BMR = 1.0 
+
     def __init__(self, id, x, y, birth_time):
         self.id = id
         self.x = x
         self.y = y
         self.hp = 10
-        self.velocidade = 1  # Base speed in squares per second, consider adjustments for traits
-        self.dano = 1  # Base damage per second
-        self.visao = 1  # Base vision in squares
-        self.reserva_calorica = 20  # Caloric reserve
+        self.velocidade = 1 
+        self.dano = 1
+        self.visao = 1
+        self.reserva_calorica = 20 
         self.vivo = True
         self.distancia_percorrida2 = 0
         self.distancia_percorrida = 0 
@@ -69,6 +62,7 @@ class BaseIndividuo:
         self.x = max(0, min(self.x + dx, size - 1))
         self.y = max(0, min(self.y + dy, size - 1))
         self.distancia_percorrida += 1
+        self.distancia_percorrida2 += 1
         self.reserva_calorica -= 0.1
 
     def move_towards_food(self, food_locations, size):
@@ -85,6 +79,7 @@ class BaseIndividuo:
                 self.x = max(0, min(self.x + dx, size - 1))
                 self.y = max(0, min(self.y + dy, size - 1))
                 self.distancia_percorrida += np.sqrt(dx**2 + dy**2)
+                self.distancia_percorrida2 += np.sqrt(dx**2 + dy**2)
                 self.reserva_calorica -= 0.1
 
     def find_closest_food(self, food_locations):
@@ -135,24 +130,18 @@ class BaseIndividuo:
             BaseIndividuo.total_duelos += 1
             
     def update_caloric_reserve(self):
-            # Adjust caloric reserve based on activity
             activity_cost = {
-                'moving': 0.5,  # Cost per unit distance
-                'running': 0.8,  # Higher cost for running from predators
-                'dueling': 2,  # Fixed cost for dueling
-                'resting': 0.1,  # Basal metabolic rate when not engaged in other activities
+                'moving': 0.2,
+                'running': 0.4,
+                'dueling': 0.5,
+                'resting': 0.1,
             }
             
             cost = self.distancia_percorrida * activity_cost.get(self.activity_this_cycle, 0.1) + BaseIndividuo.BMR
             self.reserva_calorica -= cost
             
-            # Reset distance traveled for the next cycle
-            self.distancia_percorrida2 = self.distancia_percorrida
-            self.distancia_percorrida = 0
-
             if self.reserva_calorica > 100:
                 self.reserva_calorica = 98
-            # Handle death by hunger
             if self.reserva_calorica <= 0:
                 self.mark_as_dead(current_time_millis(), cause="hunger")
 
@@ -172,7 +161,6 @@ class BaseIndividuo:
     def general_updates(self, current_time, outros_individuos, predators):
         self.update_caloric_reserve()
         self.check_for_duels(outros_individuos, current_time)
-        # Ensure the correct order of arguments when calling check_for_predator_encounters
         self.check_for_predator_encounters(predators, current_time)
         self.check_hunger()
         if self.hp <= 0 or self.reserva_calorica <= 0:
@@ -209,7 +197,6 @@ class BaseIndividuo:
             self.lifespan = current_time - self.birth_time
             BaseIndividuo.dead_individuals += 1
 
-            # Increment appropriate death cause counter
             if cause == "hunger":
                 BaseIndividuo.deaths_by_hunger += 1
             elif cause == "predator":
@@ -217,7 +204,6 @@ class BaseIndividuo:
             elif cause == "duel":
                 BaseIndividuo.deaths_by_duel += 1
             else:
-                # Handle unknown cause if necessary
                 pass
             print(f"Individual {self.id} died due to {cause} at time {current_time}.")
 
@@ -228,7 +214,6 @@ class BaseIndividuo:
             BaseIndividuo.dead_individuals += 1
         else:
             self.lifespan = 0
-
 
     def sees_food(self, food_locations):
         for food in food_locations:

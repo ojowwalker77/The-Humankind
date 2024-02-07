@@ -10,7 +10,6 @@ def log_statistics(statistics):
         log_file.write(f"{statistics}\n")
 
 def calculate_group_statistics(individuals):
-    # Create a dictionary to hold stats for each group
     groups = {
         'no_traits': [],
         'vision': [],
@@ -26,9 +25,7 @@ def calculate_group_statistics(individuals):
     death_causes = {group: {'hunger': 0, 'predator': 0, 'duel': 0} for group in groups.keys()}
 
 
-    # Populate the groups dictionary with individuals
     for ind in individuals:
-        # Determine which group(s) the individual belongs to
         group_keys = []
         if hasattr(ind, 'has_vision_gene') and ind.has_vision_gene:
             group_keys.append('vision')
@@ -37,7 +34,6 @@ def calculate_group_statistics(individuals):
         if hasattr(ind, 'memory_gene') and ind.memory_gene:
             group_keys.append('memory')
 
-        # Determine combination groups
         if len(group_keys) == 3:
             groups['allGenes'].append(ind)
         elif len(group_keys) == 2:
@@ -52,13 +48,11 @@ def calculate_group_statistics(individuals):
         else:
             groups['no_traits'].append(ind)
 
-        # Update death causes
         if hasattr(ind, 'cause_of_death'):
             for key in ['no_traits', 'vision', 'speed', 'memory', 'visionANDspeed', 'visionANDmemory', 'memoryANDspeed', 'allGenes']:
                 if ind in groups[key]:
                     death_causes[key][ind.cause_of_death] += 1
 
-    # Calculate and log statistics for each group
     group_stats = {}
     for group_name, members in groups.items():
         stats = {

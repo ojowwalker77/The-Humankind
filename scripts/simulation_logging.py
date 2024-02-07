@@ -1,4 +1,3 @@
-# simulation_logging.py
 import numpy as np
 from utils import current_time_millis
 from base_individuo import BaseIndividuo
@@ -20,7 +19,6 @@ def log_message(message):
         log_file.flush()
 
 def log_statistics(statistics, prefix="STATS"):
-    # Convert int64 to regular Python integers
     for key, value in statistics.items():
         if isinstance(value, np.int64):
             statistics[key] = int(value)

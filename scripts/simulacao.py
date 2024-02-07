@@ -67,7 +67,7 @@ def main_simulation_loop():
         if (current_time - last_log_time) >= LOG_INTERVAL_SECONDS * 1000:
             elapsed_time = (current_time - simulation_start_time) / 1000
             stats = calculate_statistics(individuos)
-            stats_str = json.dumps(stats)  # Convert the stats dictionary to a JSON string for logging
+            stats_str = json.dumps(stats)
             log_message(f"Simulation running: {elapsed_time:.2f} seconds elapsed. Statistics: {stats_str}")
             last_log_time = current_time
 
@@ -112,9 +112,4 @@ if __name__ == "__main__":
         print(f"Average caloric loss: {stats['average_cal_loss']:.2f}")
         print(f"Average Lifespan: {stats['average_lifespan']:.2f} seconds")
         print()
-    print("\nDeath Causes:")
-    for group_name, causes in death_causes.items():
-        print(f"{group_name} group:")
-        for cause, count in causes.items():
-            print(f"  {cause}: {count}")
 
